@@ -2,6 +2,7 @@
 """Print list of PRs requiring my input from Github."""
 import json
 import os
+import sys
 
 # https://github.com/PyGithub/PyGithub
 # !pip install PyGithub
@@ -43,7 +44,7 @@ def get_relevant_prs() -> list[dict[str, str]]:
                     print_title = f"{status} {repo_name} {author}: {title}"
                     data.append(dict(title=print_title, url=pull.html_url))
     except Exception as e:
-        print(f"Encountered exception {e} while checking PRs.")
+        print(f"Encountered exception {e} while checking PRs.", file=sys.stderr)
     return data
 
 
