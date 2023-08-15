@@ -23,24 +23,27 @@ def shorten_string(my_string: str) -> str:
 
 
 def get_relevant_prs() -> list[dict[str, str]]:
-    github_client = github.Github(auth=github.Auth.Token(AUTH_TOKEN))
-    repos = github_client.get_organization(ORG).get_repos()
-    valid_repos = [r for r in repos if not r.archived]  # Ignore archived repos.
-    # Open PRs only.
-    repo_pulls = {repo: repo.get_pulls(state="open") for repo in valid_repos}
     data = []
-    for repo, pulls in repo_pulls.items():
-        for pull in pulls:
-            reviewer_logins = [r.login for r in pull.requested_reviewers]
-            my_review_requested = LOGIN in reviewer_logins
-            display_pull = my_review_requested or pull.user == LOGIN
-            if display_pull:
-                repo_name = repo.full_name.lstrip(ORG + "/")
-                title = shorten_string(pull.title)
-                author = pull.user.login
-                status = "🔴" if my_review_requested else "✅"
-                print_title = f"{status} {repo_name} {author}: {title}"
-                data.append(dict(title=print_title, url=pull.html_url))
+    try:
+        github_client = github.Github(auth=github.Auth.Token(AUTH_TOKEN))
+        repos = github_client.get_organization(ORG).get_repos()
+        valid_repos = [r for r in repos if not r.archived]  # Ignore archived repos.
+        # Open PRs only.
+        repo_pulls = {repo: repo.get_pulls(state="open") for repo in valid_repos}
+        for repo, pulls in repo_pulls.items():
+            for pull in pulls:
+                reviewer_logins = [r.login for r in pull.requested_reviewers]
+                my_review_requested = LOGIN in reviewer_logins
+                display_pull = my_review_requested or pull.user == LOGIN
+                if display_pull:
+                    repo_name = repo.full_name.lstrip(ORG + "/")
+                    title = shorten_string(pull.title)
+                    author = pull.user.login
+                    status = "🔴" if my_review_requested else "✅"
+                    print_title = f"{status} {repo_name} {author}: {title}"
+                    data.append(dict(title=print_title, url=pull.html_url))
+    except Exception as e:
+        print(f"Encountered exception {e} while checking PRs.")
     return data
 
 
