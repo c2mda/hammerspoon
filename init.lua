@@ -44,13 +44,13 @@ function runGetPRs()
 end
 
 function setMenubar(task, stdOut, stdErr)
-  print(task)
-  print(stdOut)
-  print(stdErr)
+  -- print(task)
+  -- print(stdOut)
+  -- print(stdErr)
 
   data = json.decode(stdOut)
   for index, value in next, data do
-    print(index .. ": " .. tostring(value['title']).. tostring(value['url']))
+    -- print(index .. ": " .. tostring(value['title']).. tostring(value['url']))
     data[index]['fn'] = function() hs.execute("open " .. value['url']) end
   end
 
