@@ -9,6 +9,6 @@ Config does 2 things:
 
 # Installation
 
-- Install [Hammerspoon] (https://www.hammerspoon.org/)
-- Add these files under `~/.hammerspoon`: `git clone git@github.com:c2mda/hammerspoon ~/.hammerspoon`
+- Install [Hammerspoon](https://www.hammerspoon.org/)
+- Add these files under `~/.hammerspoon`: `git clone git@github.com:c2mda/hammerspoon.git ~/.hammerspoon`
 - Get a [github auth token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic) and put it in `~/github_auth_token.txt`.
