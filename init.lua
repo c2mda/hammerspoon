@@ -5,7 +5,7 @@ json = require "json"
 
 GETPR_EXECUTABLE = hs.configdir .. "/github_getprs.py"
 
-EXTERNAL_LAYOUT = "British - PC"
+EXTERNAL_LAYOUT = "British – PC"
 INTERNAL_LAYOUT = "British"
 KEYBOARD_NAME = 'USB Receiver'
 KEYBOARD_VENDOR = 'Logitech'
@@ -66,9 +66,6 @@ menubar = hs.menubar.new()
 menubar:setClickCallback(runGetPRs)
 runGetPRs()
 hs.timer.doEvery(60, runGetPRs)
-
-
-
 
 
 
