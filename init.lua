@@ -34,7 +34,7 @@ function maybeChangeLayout(devicetable)
   end
 
 end
-hs.usb.watcher.new(maybeChangeLayout):start()
+watcher = hs.usb.watcher.new(maybeChangeLayout):start()
 
 
 -- Add menubar with list of my open PRs and PRs requiring my review.
@@ -45,7 +45,7 @@ end
 
 function setMenubar(task, stdOut, stdErr)
   -- print(task)
-  -- print(stdOut)
+  -- print('rungetprs returned:' .. stdOut)
   -- print(stdErr)
 
   data = json.decode(stdOut)
@@ -65,7 +65,11 @@ end
 menubar = hs.menubar.new()
 menubar:setClickCallback(runGetPRs)
 runGetPRs()
-hs.timer.doEvery(60, runGetPRs)
+
+-- store timer in global variable to avoid gc
+-- https://github.com/Hammerspoon/hammerspoon/issues/1942
+myTimer = hs.timer.new(60, runGetPRs)
+myTimer:start()
 
 
 
