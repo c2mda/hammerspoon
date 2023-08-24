@@ -10,6 +10,7 @@ INTERNAL_LAYOUT = "British"
 KEYBOARD_NAME = 'USB Receiver'
 KEYBOARD_VENDOR = 'Logitech'
 
+
 -- Watch for external keyboard added/removed and set keyboard layout accordingly.
 function maybeChangeLayout(devicetable)
 
@@ -45,7 +46,7 @@ end
 
 function setMenubar(task, stdOut, stdErr)
   -- print(task)
-  -- print('rungetprs returned:' .. stdOut)
+  print('rungetprs returned:' .. stdOut)
   -- print(stdErr)
 
   data = json.decode(stdOut)
@@ -72,6 +73,43 @@ myTimer = hs.timer.new(60, runGetPRs)
 myTimer:start()
 
 
+-- Spectacle like keybindings.
+-- https://github.com/scottwhudson/Lunette
+lunette = hs.spoons.use("Lunette")
+customBindings = {
+  leftHalf = {
+    {{"cmd", "alt"}, "left"},
+  },
+  rightHalf = {
+    {{"cmd", "alt"}, "right"},
+  },
+  topHalf = {},
+  bottomHalf = {
+    {{"cmd", "alt"}, "down"},
+  },
+  topLeft = {},
+  topRight = {},
+  bottomLeft = {},
+  bottomRight = {},
+  fullScreen = {
+    {{"cmd", "alt"}, "up"},
+  },
+  center = {},
+  nextThird = {},
+  prevThird = {},
+  enlarge = {},
+  shrink = {
+  },
+  nextDisplay = {
+    {{"ctrl", "alt", "cmd"}, "Right"},
+  },
+  prevDisplay = {
+    {{"ctrl", "alt", "cmd"}, "Left"},
+  },
+  undo = {},
+  redo = {},
+}
+spoon.Lunette:bindHotkeys(customBindings)
 
 -- UNUSED DEBUG STUFF
 
