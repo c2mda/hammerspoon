@@ -1,8 +1,9 @@
 # Hammerspoon config
 
-Config does 2 things:
+Config does 3 things:
 
 - Set my keyboard layout correctly when I plug/unplug external keyboard.
+- Set Spectacle like keybindings to move windows around.
 - Display a menubar with a list of github PRs either requiring my review or authored by me but not yet merged.
 
 ![Example menubar with list of github PRs](menubar_github_prs.jpg)
