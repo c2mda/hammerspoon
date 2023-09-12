@@ -37,7 +37,7 @@ def get_relevant_prs() -> list[dict[str, str]]:
                 my_review_requested = LOGIN in reviewer_logins
                 display_pull = my_review_requested or pull.user.login == LOGIN
                 if display_pull:
-                    repo_name = repo.full_name.lstrip(ORG + "/")
+                    repo_name = repo.full_name.removeprefix(ORG + "/")
                     title = shorten_string(pull.title)
                     author = pull.user.login
                     status = "🔴" if my_review_requested else "✅"
