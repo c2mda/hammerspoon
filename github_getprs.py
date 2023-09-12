@@ -35,7 +35,7 @@ def get_relevant_prs() -> list[dict[str, str]]:
             for pull in pulls:
                 reviewer_logins = [r.login for r in pull.requested_reviewers]
                 my_review_requested = LOGIN in reviewer_logins
-                display_pull = my_review_requested or pull.user == LOGIN
+                display_pull = my_review_requested or pull.user.login == LOGIN
                 if display_pull:
                     repo_name = repo.full_name.lstrip(ORG + "/")
                     title = shorten_string(pull.title)
