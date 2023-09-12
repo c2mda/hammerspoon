@@ -35,11 +35,17 @@ def get_relevant_prs() -> list[dict[str, str]]:
             for pull in pulls:
                 reviewer_logins = [r.login for r in pull.requested_reviewers]
                 my_review_requested = LOGIN in reviewer_logins
-                my_pr = (pull.user.login == LOGIN)
+                my_pr = pull.user.login == LOGIN
                 display_pull = my_review_requested or my_pr
-                under_review = (pull.requested_reviewers and pull.mergeable_state == "blocked")
-                requires_attention = (not my_pr and my_review_requested) or (my_pr and not under_review)
-                ready_to_merge = (my_pr and pull.mergeable_state == "clean")
+                under_review = (
+                    pull.requested_reviewers and pull.mergeable_state == "blocked"
+                )
+                ready_to_merge = my_pr and pull.mergeable_state == "clean"
+                requires_attention = (
+                    (not my_pr and my_review_requested)
+                    or (my_pr and not under_review)
+                    or (my_pr and ready_to_merge)
+                )
                 if display_pull:
                     repo_name = repo.full_name.removeprefix(ORG + "/")
                     title = shorten_string(pull.title)
@@ -48,10 +54,18 @@ def get_relevant_prs() -> list[dict[str, str]]:
                         status = "✅"
                     elif requires_attention:
                         status = "🔴"
+                    elif under_review:
+                        status = "🔎"
                     else:
                         status = "🚧"
                     print_title = f"{status} {repo_name} {author}: {title}"
-                    data.append(dict(title=print_title, url=pull.html_url, requires_attention=str(requires_attention)))
+                    data.append(
+                        dict(
+                            title=print_title,
+                            url=pull.html_url,
+                            requires_attention=str(requires_attention),
+                        )
+                    )
     except Exception as e:
         print(f"Encountered exception {e} while checking PRs.", file=sys.stderr)
     return data
