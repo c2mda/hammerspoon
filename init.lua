@@ -50,14 +50,14 @@ function setMenubar(task, stdOut, stdErr)
   -- print(stdErr)
 
   data = json.decode(stdOut)
+  any_requires_attention = false
   for index, value in next, data do
-    -- print(index .. ": " .. tostring(value['title']).. tostring(value['url']))
     data[index]['fn'] = function() hs.execute("open " .. value['url']) end
+    any_requires_attention = any_requires_attention or value['requires_attention'] == "True"
   end
-
     
   numItems = #data
-  title = (numItems > 0) and "🔴" or "✅"
+  title = any_requires_attention and "🔴" or "✅"
   title =  title .. numItems
   menubar:setMenu(data)
   menubar:setTitle(title)

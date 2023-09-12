@@ -35,14 +35,23 @@ def get_relevant_prs() -> list[dict[str, str]]:
             for pull in pulls:
                 reviewer_logins = [r.login for r in pull.requested_reviewers]
                 my_review_requested = LOGIN in reviewer_logins
-                display_pull = my_review_requested or pull.user.login == LOGIN
+                my_pr = (pull.user.login == LOGIN)
+                display_pull = my_review_requested or my_pr
+                under_review = (pull.requested_reviewers and pull.mergeable_state == "blocked")
+                requires_attention = (not my_pr and my_review_requested) or (my_pr and not under_review)
+                ready_to_merge = (my_pr and pull.mergeable_state == "clean")
                 if display_pull:
                     repo_name = repo.full_name.removeprefix(ORG + "/")
                     title = shorten_string(pull.title)
                     author = pull.user.login
-                    status = "🔴" if my_review_requested else "✅"
+                    if ready_to_merge:
+                        status = "✅"
+                    elif requires_attention:
+                        status = "🔴"
+                    else:
+                        status = "🚧"
                     print_title = f"{status} {repo_name} {author}: {title}"
-                    data.append(dict(title=print_title, url=pull.html_url))
+                    data.append(dict(title=print_title, url=pull.html_url, requires_attention=str(requires_attention)))
     except Exception as e:
         print(f"Encountered exception {e} while checking PRs.", file=sys.stderr)
     return data
@@ -51,8 +60,8 @@ def get_relevant_prs() -> list[dict[str, str]]:
 def main():
     # Toy data for quicker debugging:
     # print(json.dumps(
-    #   [dict(title="🔴 somerepo someauthor: title of the pull request", url="http://www.example.com"),
-    #    dict(title="✅ anotherrepo anotherauthor: another pull request title", url="http://www.google.com")
+    #   [dict(title="🔴 somerepo someauthor: title of the pull request", url="http://www.example.com, requires_attention="True"),
+    #    dict(title="✅ anotherrepo anotherauthor: another pull request title", url="http://www.google.com", requires_attention="False"))
     #   ]))
     print(json.dumps(get_relevant_prs()))
 
