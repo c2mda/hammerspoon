@@ -40,6 +40,7 @@ def get_relevant_prs() -> list[dict[str, str]]:
                 under_review = (
                     pull.requested_reviewers and pull.mergeable_state == "blocked"
                 )
+                working_on_it = (my_pr and not under_review)
                 ready_to_merge = my_pr and pull.mergeable_state == "clean"
                 requires_attention = (
                     (not my_pr and my_review_requested)
@@ -50,7 +51,9 @@ def get_relevant_prs() -> list[dict[str, str]]:
                     repo_name = repo.full_name.removeprefix(ORG + "/")
                     title = shorten_string(pull.title)
                     author = pull.user.login
-                    if ready_to_merge:
+                    if working_on_it:
+                        status = "🚧"
+                    elif ready_to_merge:
                         status = "✅"
                     elif requires_attention:
                         status = "🔴"
