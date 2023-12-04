@@ -87,10 +87,11 @@ customBindings = {
   bottomHalf = {
     {{"cmd", "alt"}, "down"},
   },
-  topLeft = {},
-  topRight = {},
-  bottomLeft = {},
-  bottomRight = {},
+  -- Conflicts with Google docs shortcuts
+  -- topLeft = {{{"cmd", "alt"}, "7"}},
+  -- topRight = {{{"cmd", "alt"}, "9"}},
+  -- bottomLeft = {{{"cmd", "alt"}, "1"}},
+  -- bottomRight = {{{"cmd", "alt"}, "3"}},
   fullScreen = {
     {{"cmd", "alt"}, "up"},
   },
