@@ -48,7 +48,7 @@ function setMenubar(task, stdOut, stdErr)
   print('rungetprs returned:' .. stdOut)
 
   -- Handle errors.
-  if stdErr ~= nil then
+  if stdErr ~= nil and stdErr ~= '' then
       print('rungetprs stderr returned:' .. stdErr)
       menubar:setTitle('⚠️')
       menubar:setMenu(data)
