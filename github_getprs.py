@@ -11,7 +11,7 @@ import github
 # Assume we have a Github auth token stored in that file, with repo & PRs read access.
 AUTH_TOKEN_FILE = os.path.join(os.getenv("HOME", ""), "github_auth_token.txt")
 with open(AUTH_TOKEN_FILE, "r") as f:
-    AUTH_TOKEN = f.read()
+    AUTH_TOKEN = f.read().strip()
 ORG = "reka-ai"
 LOGIN = "c2mda"
 MAX_TITLE_LEN = 60
