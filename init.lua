@@ -45,9 +45,15 @@ function runGetPRs()
 end
 
 function setMenubar(task, stdOut, stdErr)
-  -- print(task)
   print('rungetprs returned:' .. stdOut)
-  -- print(stdErr)
+
+  -- Handle errors.
+  if stdErr ~= nil then
+      print('rungetprs stderr returned:' .. stdErr)
+      menubar:setTitle('⚠️')
+      menubar:setMenu(data)
+      return
+  end
 
   data = json.decode(stdOut)
   any_requires_attention = false
